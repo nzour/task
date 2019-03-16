@@ -18,6 +18,16 @@ export default class Search
         }
     };
 
+    static optionTags(tags) {
+        let html = "<select class='custom-select'>";
+        html += "<option selected value='none'>Выберите тег</option>";
+        tags.forEach(tag => {
+            html += `<option value='${tag.tag_id}'>${tag.tag_title}</option>`;
+        });
+        html += "</select>";
+        return html;
+    };
+
     static toggleSearchField()
     {
         let field = $(this).parent().next('div :first');
@@ -90,7 +100,11 @@ export default class Search
             },
             success : res => {
                 Search.tagsPreloader.hide();
-                content.html(res).fadeIn(100);
+                if (res === false) {
+                    content.html("Ничего не найдено").fadeIn(100);
+                    return;
+                }
+                content.html(Search.optionTags(res)).fadeIn(100);
             },
             error : error => {
                 Search.tagsPreloader.hide();
@@ -146,9 +160,13 @@ export default class Search
             method : 'get',
             beforeSend : () => {
                 $('#modalLoading').modal('show');
+                console.log("1");
             },
             success : res => {
-                $('#modalLoading').modal('hide');
+                setTimeout(() => {
+                    $('#modalLoading').modal('hide');
+                }, 500);
+
                 if (res === "false") {
                     alert("Ничего не найдено");
                     return;
