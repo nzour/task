@@ -10,7 +10,7 @@
 - Создать в папке с доменом новую папку
 - Склонируем репозиторий
 
-`git clone https://github.com//zour228/task.task . `
+    `git clone https://github.com//zour228/task.task . `
 
 - После клонирования необходимо создать базу данных :
 
