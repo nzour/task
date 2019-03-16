@@ -24,7 +24,7 @@ class Report extends Model
             throw new NotFoundReportsException('Ничего не найдено');
         } else {
             foreach ($response as $item) {
-                $item->updatedAt = self::formatDate($item->updatedAt);
+                $item->updatedAt = $item->updatedAt === null ? null : self::formatDate($item->updatedAt);
                 $item->createdAt = self::formatDate($item->createdAt);
                 $item->tags = self::getTags($item->report_id);
                 $user = User::getUserById($item->user_id);
@@ -47,7 +47,7 @@ class Report extends Model
         if ($response === null) {
             return false;
         } else {
-            $response->updatedAt = self::formatDate($response->updatedAt);
+            $response->updatedAt = $response->updatedAt === null ? null : self::formatDate($response->updatedAt);
             $response->createdAt = self::formatDate($response->createdAt);
             $user = User::getUserById($response->user_id);
             $response->userName = $user->name;
@@ -70,7 +70,7 @@ class Report extends Model
         if ($response === null) {
             throw new NotFoundReportByIdException("Ничего не найдено с id = {$id}");
         } else {
-            $response->updatedAt = self::formatDate($response->updatedAt);
+            $response->updatedAt = $response->updatedAt === null ? null : self::formatDate($response->updatedAt);
             $response->createdAt = self::formatDate($response->createdAt);
             $user = User::getUserById($response->user_id);
             $response->userName = $user->name;
@@ -207,7 +207,7 @@ class Report extends Model
                     $data->url = $currentUser->url;
                     $data->text = $re->text;
                     $data->createdAt = self::formatDate($re->createdAt);
-                    $data->updatedAt = self::formatDate($re->updatedAt);
+                    $data->updatedAt = $re->updatedAt === null ? null : self::formatDate($re->updatedAt);
                     array_push($response, $data);
                 }
                 return count($response) === 0 ? false : $response;
@@ -229,7 +229,7 @@ class Report extends Model
                             $data->url = $currentUser->url;
                             $data->text = $re->text;
                             $data->createdAt = self::formatDate($re->createdAt);
-                            $data->updatedAt = self::formatDate($re->updatedAt);
+                            $data->updatedAt = $re->updatedAt === null ? null : self::formatDate($re->updatedAt);
                             array_push($response, $data);
                         }
                     }
@@ -251,7 +251,7 @@ class Report extends Model
                             $data->url = $currentUser->url;
                             $data->text = $re->text;
                             $data->createdAt = self::formatDate($re->createdAt);
-                            $data->updatedAt = self::formatDate($re->updatedAt);
+                            $data->updatedAt = $re->updatedAt === null ? null : self::formatDate($re->updatedAt);
                             array_push($response, $data);
                         }
                     }
@@ -276,7 +276,7 @@ class Report extends Model
                         $data->url = $currentUser->url;
                         $data->text = $re->text;
                         $data->createdAt = self::formatDate($re->createdAt);
-                        $data->updatedAt = self::formatDate($re->updatedAt);
+                        $data->updatedAt = $re->updatedAt === null ? null : self::formatDate($re->updatedAt);
                         array_push($response, $data);
                     }
                     return count($response) === 0 ? false : $response;
@@ -296,7 +296,7 @@ class Report extends Model
                         $data->url = $currentUser->url;
                         $data->text = $re->text;
                         $data->createdAt = self::formatDate($re->createdAt);
-                        $data->updatedAt = self::formatDate($re->updatedAt);
+                        $data->updatedAt = $re->updatedAt === null ? null : self::formatDate($re->updatedAt);
                         array_push($response, $data);
                     }
                     return count($response) === 0 ? false : $response;
@@ -318,7 +318,7 @@ class Report extends Model
                         $data->url = $currentUser->url;
                         $data->text = $re->text;
                         $data->createdAt = self::formatDate($re->createdAt);
-                        $data->updatedAt = self::formatDate($re->updatedAt);
+                        $data->updatedAt = $re->updatedAt === null ? null : self::formatDate($re->updatedAt);
                         array_push($response, $data);
                     }
                     return count($response) === 0 ? false : $response;
@@ -338,7 +338,7 @@ class Report extends Model
                         $data->url = $currentUser->url;
                         $data->text = $re->text;
                         $data->createdAt = self::formatDate($re->createdAt);
-                        $data->updatedAt = self::formatDate($re->updatedAt);
+                        $data->updatedAt = $re->updatedAt === null ? null : self::formatDate($re->updatedAt);
                         array_push($response, $data);
                     }
                     return count($response) === 0 ? false : $response;
@@ -367,7 +367,7 @@ class Report extends Model
             $data->url = $currentUser->url;
             $data->text = $report->text;
             $data->createdAt = self::formatDate($report->createdAt);
-            $data->updatedAt = self::formatDate($report->updatedAt);
+            $data->updatedAt = $report->updatedAt === null ? null : self::formatDate($report->updatedAt);
             array_push($response, $data);
         }
         return count($response) === 0 ? false : $response;
