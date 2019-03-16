@@ -95,6 +95,7 @@ class Report extends Model
      * @param Request
      * @param bool
      * @return bool
+     * @throws \Exception
      */
     public static function addNew($request, $captcha=true)
     {
@@ -112,6 +113,7 @@ class Report extends Model
         $userId = User::getUserByName($request->userName)->id;
 
         $report = self::create([
+            'createdAt' => self::getCurrentTimeStamp(),
             'user_id' => $userId,
             'text' => $request->text
         ]);

@@ -31,7 +31,7 @@ export default class User
         let type = prev.data('type');
         let otherIcons = `
         <i class="fa fa-check" aria-hidden="true"></i>
-        <i class="fa fa-times" aria-hidden="true"></i>
+        <i class="fa fa-times cancel" aria-hidden="true"></i>
         `;
         icon.html(otherIcons);
         switch (type) {

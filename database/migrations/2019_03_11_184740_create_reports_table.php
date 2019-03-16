@@ -17,7 +17,7 @@ class CreateReportsTable extends Migration
             $table->increments('report_id');
             $table->integer('user_id');
             $table->text('text');
-            $table->timestamp('createdAt');
+            $table->timestamp('createdAt')->nullable()->update(null);
             $table->timestamp('updatedAt')->nullable();
         });
     }

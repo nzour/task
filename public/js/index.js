@@ -12,7 +12,7 @@ $('body').on('click', '#doDeleteReport', Report.deleteReport);
 $('body').on('click', 'i.fa-trash', Report.deleteReportFromMainPage);
 
 $('body').on('click', 'i.fa-pencil', User.switchOnUpdate);
-$('body').on('click', 'i.fa-times', User.switchOffUpdate);
+$('body').on('click', 'i.cancel', User.switchOffUpdate);
 $('body').on('click', 'i.fa-check', User.saveChanges);
 $('body').on('click', '#doDeleteUserModal', User.delete);
 
