@@ -1,29 +1,31 @@
+
+let current = {
+    name : '',
+    email : '',
+    url : ''
+};
+
+let status = {
+    success : () => {
+        let field = $('#status');
+        field.text('Успешно').fadeIn();
+        setTimeout(() => {field.text('').fadeOut()}, 3000);
+    },
+    none : () => {
+        let field = $('#status');
+        field.html('').fadeOut();
+
+    },
+    loading : () => {
+        let field = $('#status');
+        field.html(`<img src="/images/preloader.gif" alt="Загрузка" style="width:150px">`).fadeIn();
+    }
+
+};
+
+
 export default class User
 {
-    static current = {
-        name : '',
-        email : '',
-        url : ''
-    };
-
-    static status = {
-        success : () => {
-            let field = $('#status');
-            field.text('Успешно').fadeIn();
-            setTimeout(() => {field.text('').fadeOut()}, 3000);
-        },
-        none : () => {
-            let field = $('#status');
-            field.html('').fadeOut();
-
-        },
-        loading : () => {
-            let field = $('#status');
-            field.html(`<img src="/images/preloader.gif" alt="Загрузка" style="width:150px">`).fadeIn();
-        }
-
-    };
-
     static switchOnUpdate()
     {
         let icon = $(this).parent();
@@ -36,18 +38,18 @@ export default class User
         icon.html(otherIcons);
         switch (type) {
             case 'name' :
-                User.current.name = prev.text().trim();
-                prev.html(`<input class="form-control" type="text" name="name" value="${User.current.name}">`);
+                current.name = prev.text().trim();
+                prev.html(`<input class="form-control" type="text" name="name" value="${current.name}">`);
                 prev.children().focus();
                 break;
             case 'email' :
-                User.current.email = prev.text().trim();
-                prev.html(`<input class="form-control" type="text" name="email" value="${User.current.email}">`);
+                current.email = prev.text().trim();
+                prev.html(`<input class="form-control" type="text" name="email" value="${current.email}">`);
                 prev.children().focus();
                 break;
             case 'url' :
-                User.current.url = prev.text().trim();
-                prev.html(`<input class="form-control" type="text" name="url" value="${User.current.url}">`);
+                current.url = prev.text().trim();
+                prev.html(`<input class="form-control" type="text" name="url" value="${current.url}">`);
                 prev.children().focus();
                 break;
             default :
@@ -71,15 +73,15 @@ export default class User
         switch (type) {
             case 'name' :
                 message.text('').fadeOut(100);
-                prev.text(User.current.name);
+                prev.text(current.name);
                 break;
             case 'email' :
                 message.text('').fadeOut(100);
-                prev.text(User.current.email);
+                prev.text(current.email);
                 break;
             case 'url' :
                 message.text('').fadeOut(100);
-                prev.text(User.current.url);
+                prev.text(current.url);
                 break;
             default :
                 console.log("Произошла ошибка");
@@ -114,7 +116,7 @@ export default class User
         message.text('').fadeOut(100);
 
         if (type === "name") {
-            if (value === User.current.name) {
+            if (value === current.name) {
                 prev.text(value);
                 icon.html(otherIcons);
                 return;
@@ -123,11 +125,11 @@ export default class User
                 url : `/user/get/${value}`,
                 method : 'get',
                 beforeSend : () => {
-                    User.status.loading();
+                    status.loading();
                 },
                 success : res => {
                     if (res !== false) {
-                        User.status.none();
+                        status.none();
                         message.text('Данное имя уже существует. Попробуйте другое').fadeIn(100);
                     } else {
                         $.ajax({
@@ -139,17 +141,17 @@ export default class User
                             processData : false,
                             success : res => {
                                 if (res === false) {
-                                    User.status.none();
+                                    status.none();
                                     message('Прозошла ошибка').fadeIn(100);
                                     window.location.reload();
                                 } else {
                                     icon.html(otherIcons);
-                                    User.status.success();
+                                    status.success();
                                     prev.text(res);
                                 }
                             },
                             error : () => {
-                                User.status.none();
+                                status.none();
                             }
                         })
                     }
@@ -166,7 +168,7 @@ export default class User
                 message.text('Недопустимые символы в ссылке на профиль пользователя').fadeIn(100);
                 return;
             }
-            if (value === User.current.url) {
+            if (value === current.url) {
                 prev.text(value);
                 icon.html(otherIcons);
                 return;
@@ -175,11 +177,11 @@ export default class User
                 url : `/url/exists/${value}`,
                 method : 'get',
                 beforeSend : () => {
-                    User.status.loading();
+                    status.loading();
                 },
                 success : res => {
                     if (res !== false) {
-                        User.status.none();
+                        status.none();
                         message.text('Данный url уже существует. Попробуйте другой').fadeIn(100);
                     } else {
 
@@ -192,17 +194,17 @@ export default class User
                             processData : false,
                             success : res => {
                                 if (res === false) {
-                                    User.status.none();
+                                    status.none();
                                     message('Прозошла ошибка').fadeIn(100);
                                     window.location.reload();
                                 } else {
                                     icon.html(otherIcons);
-                                    User.status.success();
+                                    status.success();
                                     window.location.href = `/user/${res}`;
                                 }
                             },
                             error : () => {
-                                User.status.none();
+                                status.none();
                             }
                         })
                     }
@@ -215,7 +217,7 @@ export default class User
                 message.text('Некорректный формат Email').fadeIn(100);
                 return;
             }
-            if (value === User.current.email) {
+            if (value === current.email) {
                 prev.text(value);
                 icon.html(otherIcons);
                 return;
@@ -228,28 +230,28 @@ export default class User
                 contentType : false,
                 processData : false,
                 beforeSend : () => {
-                    User.status.loading();
+                    status.loading();
                 },
                 success : res => {
                     if (res === false) {
-                        User.status.none();
+                        status.none();
                         message('Прозошла ошибка').fadeIn(100);
                         window.location.reload();
                     } else {
                         icon.html(otherIcons);
-                        User.status.success();
+                        status.success();
                         prev.text(res);
                     }
                 },
                 error : () => {
-                    User.status.none();
+                    status.none();
                 }
             })
         }
 
     }
 
-    static delete()
+    static delete(event)
     {
         event.preventDefault();
         let form = new FormData(document.querySelector('form#modalDeleteForm'));

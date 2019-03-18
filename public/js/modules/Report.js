@@ -1,14 +1,14 @@
+let notValid = false;
+
 export default class Report
 {
-    static notValid = false;
-
-    static addReport()
+    static addReport(event)
     {
         event.preventDefault();
         let message = $('#message');
         let preloader = $('#preloader');
         Report.doValidated();
-        if (Report.notValid) {
+        if (notValid) {
             return;
         }
         let captcha = grecaptcha.getResponse();
@@ -111,7 +111,7 @@ export default class Report
 
     }
 
-    static updateReport()
+    static updateReport(event)
     {
         event.preventDefault();
 
@@ -144,7 +144,7 @@ export default class Report
             processData : false,
             success : (res) => {
                 if (res === true) {
-                    Report.switchOffUpdate();
+                    Report.switchOffUpdate(event);
                 } else {
                     message.text("Возникла ошибка").fadeIn(100);
                 }
@@ -155,7 +155,7 @@ export default class Report
         })
     }
 
-    static switchOnUpdate()
+    static switchOnUpdate(event)
     {
         event.preventDefault();
 
@@ -169,7 +169,7 @@ export default class Report
         })
     }
 
-    static switchOffUpdate()
+    static switchOffUpdate(event)
     {
         event.preventDefault();
 
@@ -183,7 +183,7 @@ export default class Report
         })
     }
 
-    static deleteReport()
+    static deleteReport(event)
     {
         event.preventDefault();
         let form = new FormData(document.querySelector('form#modalDeleteForm'));
@@ -210,7 +210,7 @@ export default class Report
         })
     }
 
-    static deleteReportFromMainPage()
+    static deleteReportFromMainPage(event)
     {
         event.preventDefault();
         let token = $('input[name=_token]').val().trim();
@@ -267,41 +267,41 @@ export default class Report
 
         if (userName.length === 0) {
             message.text('Пожалуйста, заполните имя').fadeIn(100);
-            Report.notValid = true;
+            notValid = true;
             return;
         }
 
         if (email.length === 0) {
             message.text('Пожалуйста, заполните Email').fadeIn(100);
-            Report.notValid = true;
+            notValid = true;
             return;
         }
 
         if (!/[@]/.test(email) || /[А-яЁё\s]/.test(email)) {
             message.text('Некорректный формат Email').fadeIn(100);
-            Report.notValid = true;
+            notValid = true;
             return;
         }
         if (text.length === 0) {
             message.text('Пожалуйста, заполните поле с сообщением').fadeIn(100);
-            Report.notValid = true;
+            notValid = true;
             return;
         }
 
         if (url.length !== 0) {
             if (!/^[a-zA-Z0-9_]+$/.test(url)) {
                 message.text('Недопустимые символы в ссылке на профиль пользователя').fadeIn(100);
-                Report.notValid = true;
+                notValid = true;
                 return;
             }
             if (url.length < 5) {
                 message.text('Ссылка на профиль пользователя должна быть длиннее 5 символов').fadeIn(100);
-                Report.notValid = true;
+                notValid = true;
                 return;
             }
         } else {
             message.text('').fadeOut(100);
-            Report.notValid = false
+            notValid = false
         }
     }
 

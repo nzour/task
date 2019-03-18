@@ -1,7 +1,7 @@
 export default class Tag
 {
 
-    static showAddTagWindow()
+    static showAddTagWindow(event)
     {
         event.preventDefault();
         $('#addTagInput').html('').html(
@@ -21,7 +21,7 @@ export default class Tag
         $(this).hide();
     }
 
-    static hideAddTagWindow() {
+    static hideAddTagWindow(event) {
         event.preventDefault();
         $('#addTagInput').html('');
         $('#showAddNewTag').fadeIn(250);
@@ -46,7 +46,7 @@ export default class Tag
         }
     }
 
-    static doDeleteTag() {
+    static doDeleteTag(event) {
         event.preventDefault();
         $(this).parent().remove();
     }

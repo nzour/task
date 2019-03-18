@@ -1,4 +1,3 @@
-'use strict';
 import Report from './modules/Report.js';
 import Tag from './modules/Tag.js';
 import User from './modules/User.js';

@@ -1,23 +1,24 @@
+
+let tagsPreloader = {
+    show : () => {
+        $('#tagsPreloader').show();
+    },
+    hide : () => {
+        $('#tagsPreloader').hide();
+    }
+}
+
+let preloader = {
+    show : () => {
+        $('#searchPreloader').show();
+    },
+    hide : () => {
+        $('#searchPreloader').hide();
+    }
+};
+
 export default class Search
 {
-    static tagsPreloader = {
-        show : () => {
-            $('#tagsPreloader').show();
-        },
-        hide : () => {
-            $('#tagsPreloader').hide();
-        }
-    }
-
-    static preloader = {
-        show : () => {
-            $('#searchPreloader').show();
-        },
-        hide : () => {
-            $('#searchPreloader').hide();
-        }
-    };
-
     static optionTags(tags) {
         let html = "<select class='custom-select'>";
         html += "<option selected value='none'>Выберите тег</option>";
@@ -69,11 +70,11 @@ export default class Search
             processData: false,
             beforeSend : () => {
                 $(message).fadeIn(200).children().first().text(``);
-                Search.preloader.show();
+                preloader.show();
                 $(message).hide();
             },
             success : (res) => {
-                Search.preloader.hide();
+                preloader.hide();
                 if (res === "false") {
                     $(message).fadeIn(200).children().first().text(`Ничего не найдено`);
                     table.html('');
@@ -82,7 +83,7 @@ export default class Search
                 table.html(res);
             },
             error : (error) => {
-                Search.preloader.hide();
+                preloader.hide();
                 $(message).fadeIn(200).children().first().text(`Произошла ошибка. Подробнее в консоли`);
                 console.log(error);
             }
@@ -96,10 +97,10 @@ export default class Search
             url : '/tags/all',
             method : 'get',
             beforeSend : () => {
-                Search.tagsPreloader.show();
+                tagsPreloader.show();
             },
             success : res => {
-                Search.tagsPreloader.hide();
+                tagsPreloader.hide();
                 if (res === false) {
                     content.html("Ничего не найдено").fadeIn(100);
                     return;
@@ -107,7 +108,7 @@ export default class Search
                 content.html(Search.optionTags(res)).fadeIn(100);
             },
             error : error => {
-                Search.tagsPreloader.hide();
+                tagsPreloader.hide();
                 content.html('Возникла ошибка. Подробнее в консоли').fadeIn(100);
                 console.log(error);
             }
@@ -131,12 +132,12 @@ export default class Search
             url : `/search/${value}`,
             method : 'get',
             beforeSend : () => {
-                Search.tagsPreloader.show();
+                tagsPreloader.show();
                 content.hide();
             },
             success : res => {
                 if (res === "false") {
-                    Search.tagsPreloader.hide();
+                    tagsPreloader.hide();
                     content.append(`<div class="alert alert-warning">Ничего не найдено</div>`).fadeIn(200);
                     return;
                 }
@@ -144,14 +145,14 @@ export default class Search
                 $('#modalSearchTags').modal('hide');
             },
             error : error => {
-                Search.tagsPreloader.hide();
+                tagsPreloader.hide();
                 content.append(`<div class="alert alert-danger">Возникла ошибка. Подробнее в консоли</div>`).fadeIn(200);
                 console.log(error);
             }
         })
     }
 
-    static doSearchByTagName() {
+    static doSearchByTagName(event) {
         event.preventDefault();
         window.scrollTo(0, 0);
         let tagName = $(this).text().trim();
