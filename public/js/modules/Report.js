@@ -311,6 +311,8 @@ export default class Report
         let email = $('#email');
         let url = $('#url');
         if (userName.length === 0) {
+            email.removeAttr('disabled');
+            url.removeAttr('disabled');
             return;
         }
         $.ajax({
