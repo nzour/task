@@ -324,10 +324,15 @@ export default class Report
             method : 'get',
             success : res => {
                 console.log(res + " " + typeof res);
-                if (res === false) {
+                if (res === false || res === 0 || typeof res === "boolean" || res === "false") {
                     email.removeAttr('disabled');
-                    url.removeAttr('disabled');
+                    url.removeAttr('disabled').val('');
+                    $('#userNameHelp').html('Обязательное поле.');
                 } else {
+                    if (typeof res === "string") {
+                        res = JSON.parse(res);
+                    }
+                    $('#userNameHelp').html(`Обязательное поле. <a href="/user/${res.url}">Ссылка на пользователя</a>`);
                     email.attr('disabled', ' ').val(res.email);
                     url.attr('disabled', ' ').val(res.url);
                 }

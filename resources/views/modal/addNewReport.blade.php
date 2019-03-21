@@ -15,7 +15,7 @@
                 <div class="form-group">
                     <label for="userName">Введите имя</label>
                     <input type="text" class="form-control" id="userName" name="userName" >
-                    <small class="form-text text-muted">Обязательное поле.</small>
+                    <small id="userNameHelp" class="form-text text-muted">Обязательное поле. </small>
                 </div>
                 <div class="form-group">
                     <label for="email">Введите почту</label>

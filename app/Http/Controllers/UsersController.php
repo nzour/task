@@ -38,13 +38,15 @@ class UsersController extends Controller
     public static function getUser($userName)
     {
         header('Content-Type: application/json');
-        echo json_encode(App\User::getUserByName($userName));
+        $response = App\User::getUserByName($userName);
+        echo json_encode($response);
     }
 
     public static function getUrl($url)
     {
         header('Content-Type: application/json');
-        echo json_encode(App\User::getUrl($url));
+        $response = App\User::getUrl($url);
+        echo json_encode($response);
     }
 
     public static function deleteUser(Request $request)
