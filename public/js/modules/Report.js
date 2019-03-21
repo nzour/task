@@ -90,12 +90,11 @@ export default class Report
                 },
                 success: res => {
                     preloader.fadeOut(300);
-                    console.log(res);
                     if (res === true) {
                         window.location.href = "/";
                     } else {
                         if (res === "CAPTCHA_ERROR") {
-                            message.text('Ошибка с каптчей. Убедитесь, что вы её прошли');
+                            message.text('Ошибка связанная с каптчей. Убедитесь, что вы её прошли').fadeIn(200);
                             return;
                         }
                         message.text("Возникла ошибка. Подробнее в консоль").fadeIn(200);
@@ -271,24 +270,28 @@ export default class Report
             return;
         }
 
-        if (email.length === 0) {
-            message.text('Пожалуйста, заполните Email').fadeIn(100);
-            notValid = true;
-            return;
+        if ($('#email').attr('disabled') === undefined) {
+            if (email.length === 0) {
+                console.log("l = 0 " + email.length);
+                message.text('Пожалуйста, заполните Email').fadeIn(100);
+                notValid = true;
+                return;
+            }
+
+            if (!/[@]/.test(email) || /[А-яЁё\s]/.test(email)) {
+                message.text('Некорректный формат Email').fadeIn(100);
+                notValid = true;
+                return;
+            }
         }
 
-        if (!/[@]/.test(email) || /[А-яЁё\s]/.test(email)) {
-            message.text('Некорректный формат Email').fadeIn(100);
-            notValid = true;
-            return;
-        }
         if (text.length === 0) {
             message.text('Пожалуйста, заполните поле с сообщением').fadeIn(100);
             notValid = true;
             return;
         }
 
-        if (url.length !== 0) {
+        if (url.length !== 0 && $('#url').attr('disabled') === undefined) {
             if (!/^[a-zA-Z0-9_]+$/.test(url)) {
                 message.text('Недопустимые символы в ссылке на профиль пользователя').fadeIn(100);
                 notValid = true;
@@ -299,10 +302,11 @@ export default class Report
                 notValid = true;
                 return;
             }
-        } else {
-            message.text('').fadeOut(100);
-            notValid = false
         }
+
+        message.text('').fadeOut(100);
+        notValid = false
+
     }
 
     static isUserExists()
@@ -319,12 +323,13 @@ export default class Report
             url : `/user/get/${userName}`,
             method : 'get',
             success : res => {
-                if (res !== false) {
+                console.log(res + " " + typeof res);
+                if (res === false) {
+                    email.removeAttr('disabled');
+                    url.removeAttr('disabled');
+                } else {
                     email.attr('disabled', ' ').val(res.email);
                     url.attr('disabled', ' ').val(res.url);
-                } else {
-                    email.removeAttr('disabled').val('');
-                    url.removeAttr('disabled').val('');
                 }
             }
         })
